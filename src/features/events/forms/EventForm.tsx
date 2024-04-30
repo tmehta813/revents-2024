@@ -1,37 +1,49 @@
 import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Header, Segment } from "semantic-ui-react";
+import { useAppDispatch, useAppSelector } from "../../../app/store/store";
+import { createEvent, updateEvent } from "../eventSlice";
+import { createId } from "@paralleldrive/cuid2";
 
 
 export default function EventForm() {
 
-    const initialValues = {
-        title : '',
-        category : '',
-        description : '',
+    let {id}  = useParams();
+    const event = useAppSelector(state => state.events.events.find(e => e.id === id))
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
+    const initialValues = event || {
+        title: '',
+        category: '',
+        description: '',
         city: '',
-        venue : '',
-        date : ''
+        venue: '',
+        date: ''
+    };
+    
+    const [values, setValues] = useState(initialValues);
+    
+    function onSubmit() {
+        const eventId = id ?? createId(); // Corrected comparison
+    
+        console.log(values); // Changed to values instead of initialValues
+        if (event) {
+            dispatch(updateEvent({...event, ...values}));
+        } else {
+            dispatch(createEvent({...values, id: eventId, hostedBy: "Tarun", attendees: [], hostPhotoURL: ''}));
+        }
+        navigate(`/events/${eventId}`);
     }
-
-    const [values, setValues] = useState(initialValues)
-
-    function onSubmit(){
-        console.log(initialValues)
-        // selectedEvent ? 
-        //     updateEvent({...selectedEvent, ...initialValues})
-        // : addEvent({...values, id: createId(), hostedBy: 'tarun', attendees : [], hostPhotoURL: '' })
-        // setFormOpen(false)
-    }
-
-    function handleInputChange(e : ChangeEvent<HTMLInputElement>){
-        const {name, value} = e.target
-        setValues({...values,[name]:value})
+    
+    function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+        const {name, value} = e.target;
+        setValues({...values, [name]: value}); // Use functional update
     }
 
   return (
     <Segment clearing>
-        <Header content = {'Create Event'}></Header>
+        <Header content = {event?'Create Event':'Update Event'}></Header>
         <Form onSubmit={onSubmit}>
             <Form.Field>
                 <input 
