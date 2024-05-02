@@ -2,18 +2,17 @@ import { NavLink } from "react-router-dom";
 import { Button, Container, Menu } from "semantic-ui-react";
 import SignedOutButtons from "./SignedOutButtons";
 import SignedInMenu from "./SignedInMenu";
-import { useState } from "react";
+import { useAppSelector } from "../../store/store";
 
 export default function NavBar() {
-
-  const [auth, setAuth] = useState(false)
+  const { authenticated } = useAppSelector(state => state.auth)
 
   return (
     <Menu inverted={true} fixed="top">
       <Container>
         <Menu.Item header as={NavLink} to='/'>
           <img src="/logo.png" alt="logo" />
-          Transition
+          GuideGuru
         </Menu.Item>
         <Menu.Item name="Events" as={NavLink} to='/events' />
         <Menu.Item name="Scratch" as={NavLink} to='/scratch' />
@@ -27,7 +26,7 @@ export default function NavBar() {
           >
           </Button>
         </Menu.Item>
-        {auth ? <SignedInMenu setAuth={setAuth} /> : <SignedOutButtons setAuth={setAuth}/>}
+        {authenticated ? <SignedInMenu /> : <SignedOutButtons />}
 
       </Container>
     </Menu>

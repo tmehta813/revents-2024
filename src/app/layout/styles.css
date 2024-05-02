@@ -23,3 +23,7 @@ masthead h1.ui.header {
     font-size:  4;
 }
 
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
