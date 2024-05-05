@@ -1,6 +1,5 @@
 import ModalWrapper from "../../app/common/modals/ModalWrapper";
 import { FieldValues, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { useAppDispatch } from "../../app/store/store";
 import { closeModal } from "../../app/common/modals/modalSlice";
 import { Button, Form } from "semantic-ui-react";
