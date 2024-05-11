@@ -2,7 +2,6 @@ import { Button, Icon, Item, ItemGroup, Label, List, Segment, SegmentGroup } fro
 import EventListAttendee from "./EventListAttendee";
 import { AppEvent } from "../../../app/types/event";
 import { Link } from "react-router-dom";
-import { useFireStore } from "../../../app/hooks/firestore/useFirestore";
 
 type Props = {
     event: AppEvent

@@ -15,7 +15,7 @@ import { Timestamp } from "firebase/firestore";
 
 export default function EventForm() {
 
-    const { loadDocument, create, update, remove } = useFireStore('events')
+    const { loadDocument, create, update } = useFireStore('events')
 
     const { register, control, setValue, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm({
         mode: 'onTouched',

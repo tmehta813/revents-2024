@@ -11,7 +11,6 @@ export default function NavBar() {
   const { authenticated } = useAppSelector(state => state.auth)
 
   function seedData() {
-    console.log("seed clicked")
     sampleData.forEach(async event => {
       const { id, ...rest } = event;
       await setDoc(doc(db, 'events', id), {
