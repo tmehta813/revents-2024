@@ -15,16 +15,20 @@ export default function SignedInMenu() {
 
     return (
         <Menu.Item position='right'>
-             <Image avatar spaced='right' src={'/user'}> </Image>
+            <img
+                alt="avatar"
+                src={currentUser?.photoURL || '/user.png'}
+                style={{ borderRadius: '50%', width: 25, height: 25, marginRight: 10 }}
+            />
             <Dropdown pointing='top left' text={currentUser.email}>
                 <Dropdown.Menu>
                     <Dropdown.Item as={Link} to='/createEvent' text='Create Event' icon='plus' ></Dropdown.Item>
-                    <Dropdown.Item text='My Profile' icon='user' ></Dropdown.Item>
-                    <Dropdown.Item as = {Link} to = {'/account'} text='My Accounts' icon='settings' ></Dropdown.Item>
+                    <Dropdown.Item as={Link} to={`/profiles/${auth.currentUser?.uid}`} text='My Profile' icon='user' ></Dropdown.Item>
+                    <Dropdown.Item as={Link} to={'/account'} text='My Accounts' icon='settings' ></Dropdown.Item>
                     <Dropdown.Item onClick={handleSignout} text='Sign out' icon='power' ></Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-           
+
         </Menu.Item>
     )
 }
