@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, ButtonGroup, Card, CardGroup, Grid, Header, Image, Tab, TabPane } from "semantic-ui-react";
+import { Button, ButtonGroup, Card, CardGroup, Grid, Header, Image, TabPane } from "semantic-ui-react";
 import { Photo, Profile } from "./profile";
 import { auth, storage } from "../../app/config/firebase";
 import PhotoUploads from "./PhotoUploads";

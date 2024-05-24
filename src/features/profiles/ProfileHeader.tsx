@@ -7,7 +7,6 @@ type Props = {
 }
 
 export default function ProfileHeader({profile}: Props) {
-    console.log(profile);
     return (
         <Segment>
             <Grid>

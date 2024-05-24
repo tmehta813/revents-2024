@@ -8,7 +8,6 @@ type Props = {
 }
 
 export default function EventListItem({ event }: Props) {
-
     return (
         <SegmentGroup>
             <Segment>
@@ -24,10 +23,10 @@ export default function EventListItem({ event }: Props) {
                             </Item.Description>
                             {event.isCancelled && (
                                 <Label
-                                style = {{top: '-40px'}}
-                                ribbon='right'
-                                color = 'red'
-                                content='This event has been cancelled'
+                                    style={{ top: '-40px' }}
+                                    ribbon='right'
+                                    color='red'
+                                    content='This event has been cancelled'
                                 >
                                 </Label>
                             )}

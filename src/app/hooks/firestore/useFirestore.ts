@@ -4,6 +4,8 @@ import { GenericActions } from "../../store/genericSlice";
 import { DocumentData, collection, deleteDoc, doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore"; // Added "doc" import
 import { db } from "../../config/firebase";
 import { toast } from "react-toastify";
+import { CollectionOptions } from "./types";
+import { getQuery } from "./getQuery";
 
 type ListenerState = {
     name?: string;
@@ -29,9 +31,9 @@ export const useFireStore = <T extends DocumentData>(path: string) => {
 
     const dispatch = useAppDispatch();
 
-    const loadCollection = useCallback((actions: GenericActions<T>) => {
+    const loadCollection = useCallback((actions: GenericActions<T>, options?: CollectionOptions) => {
         dispatch(actions.loading());
-        const query = collection(db, path);
+        const query = getQuery(path, options)
 
         const listener = onSnapshot(query, {
             next: querySnapshot => {
@@ -40,7 +42,8 @@ export const useFireStore = <T extends DocumentData>(path: string) => {
                     dispatch(actions.success([] as unknown as T));
                     return;
                 }
-
+                console.log('tarun: data',data);
+                
                 querySnapshot.forEach(doc => {
                     data.push({ id: doc.id, ...doc.data() });
                 });

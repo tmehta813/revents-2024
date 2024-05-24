@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Dropdown, Image, Menu } from "semantic-ui-react";
+import { Dropdown, Menu } from "semantic-ui-react";
 import { useAppSelector } from "../../store/store";
 import { auth } from "../../config/firebase";
 import { signOut } from "firebase/auth";
@@ -12,7 +12,6 @@ export default function SignedInMenu() {
         await signOut(auth)
         navigate('/')
     }
-
     return (
         <Menu.Item position='right'>
             <img

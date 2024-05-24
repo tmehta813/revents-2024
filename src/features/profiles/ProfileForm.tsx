@@ -12,7 +12,7 @@ type Props = {
 
 export default function ProfileForm({ profile, setEditMode }: Props) {
     const { update } = useFireStore('profiles')
-    const { register, handleSubmit, formState: { errors, isSubmitting, isDirty, isValid } } = useForm({
+    const { register, handleSubmit, formState: { errors, isSubmitting, isValid } } = useForm({
         mode: 'onTouched',
         defaultValues: {
             displayName: profile.displayName,

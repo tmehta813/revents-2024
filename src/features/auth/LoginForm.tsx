@@ -15,7 +15,6 @@ export default function LoginForm() {
     const dispatch = useAppDispatch()
 
     async function onSubmit(data: FieldValues) {
-        console.log(data)
         try {
 
             await signInWithEmailAndPassword(auth, data.email, data.password)
