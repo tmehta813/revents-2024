@@ -44,7 +44,6 @@ export default function EventDashBoard() {
     }
 
     useEffect(() => {
-        console.log('event dashboard: loading collection', state.query);
         loadCollection(actions, {
             queries: state.query
         });

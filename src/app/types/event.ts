@@ -22,3 +22,14 @@ export type Attendee = {
     displayName: string
     photoURL: string
 }
+
+export type ChatComment = {
+    id: string
+    displayName: string
+    photoURL: string
+    uid: string
+    date: number
+    text:string
+    parentId: string | null
+    childNodes: ChatComment[]
+}

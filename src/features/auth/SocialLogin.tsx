@@ -20,9 +20,7 @@ export default function SocialLogin() {
     async function handleSocialLogin(selectedProvider: string) {
         setStatus({ loading: true, provider: selectedProvider })
         let provider: AuthProvider
-        if (selectedProvider == 'github') {
-            console.log('inside github social login', selectedProvider );
-            
+        if (selectedProvider == 'github') {  
             provider = new GithubAuthProvider();
         }
         else if (selectedProvider == 'google') {
