@@ -24,7 +24,6 @@ export default function EventDetailedChat({ eventId }: Props) {
             const chatRef = ref(fb, `chat/${eventId}`);
             const unsubscribe = onChildAdded(chatRef, snapshot => {
                 const data = snapshot.val();
-                console.log(data);
                 if (snapshot.key && snapshot.key != null) {
                     const newComment = { ...data, id: snapshot.key }
                     setComments(prevComments => [...prevComments, newComment])

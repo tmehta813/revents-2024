@@ -7,11 +7,9 @@ type State = {
     data : Profile[]
 }
 
-
 const initialState : State = {
     data : []
 }
-
 
 export const profileSlice = createGenericSlice({
     name: 'profiles',
@@ -19,7 +17,18 @@ export const profileSlice = createGenericSlice({
     reducers: {
         success: {
             reducer: (state, action: PayloadAction<Profile[]>) => {
-                state.data = action.payload;
+                state.data = action.payload.map(profile => {
+                    const prevProfile = state.data.find(x => x.id === profile.id);
+                    if (prevProfile) {
+                        return {
+                            ...prevProfile,
+                            ...profile, // Update the profile properties
+                            followerCount: profile.followerCount // Update the follower count
+                        };
+                    } else {
+                        return profile;
+                    }
+                })
                 state.status = 'finished'
             },
             prepare: (profiles) => {
@@ -32,6 +41,17 @@ export const profileSlice = createGenericSlice({
                 });
                 return { payload: mapped };
             }
+        },
+        setFollowing: (state, action) => {
+            state.data = state.data.map(profile => {
+                if (profile.id !== action.payload.id) return profile;
+                else {
+                    return {
+                        ...profile,
+                        isFollowing: action.payload.isFollowing
+                    };
+                }
+            });
         }
     }
 })
