@@ -9,6 +9,7 @@ import { actions } from "./photoSlice";
 import { updateProfile } from "firebase/auth";
 import { deleteObject, ref } from "firebase/storage";
 import { toast } from "react-toastify";
+import { batchSetPhoto } from "../../app/actions/fireStoreAction";
 
 type Props = {
     profile: Profile;
@@ -26,6 +27,7 @@ export default function ProfilePhoto({ profile }: Props) {
     }, [loadCollection])
 
     async function handleSetMain(photo: Photo) {
+        await batchSetPhoto(photo.url)
         await update(profile.id, {
             photoURL: photo.url
         })

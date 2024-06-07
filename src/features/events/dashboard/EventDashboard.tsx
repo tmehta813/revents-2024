@@ -1,7 +1,7 @@
-import { Grid } from "semantic-ui-react";
+import {Grid } from "semantic-ui-react";
 import EventList from "./EventList";
-import { useAppSelector } from "../../../app/store/store";
-import { useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/store/store";
+import { useCallback, useEffect, useState } from "react";
 import { actions } from "../eventSlice";
 import { useFireStore } from "../../../app/hooks/firestore/useFirestore";
 import { QueryOptions } from "../../../app/hooks/firestore/types";
@@ -15,9 +15,9 @@ type State = {
 };
 
 export default function EventDashBoard() {
-    const contextRef = useRef(null)
-    const { data: events, status } = useAppSelector(state => state.events);
-    const { loadCollection } = useFireStore('events');
+    const dispatch = useAppDispatch()
+    const { data: events, status, loadedInitial } = useAppSelector(state => state.events);
+    const { loadCollection, hasMore } = useFireStore('events');
 
     const [state, setState] = useState<State>({
         filter: 'all',
@@ -43,27 +43,52 @@ export default function EventDashBoard() {
         }));
     }
 
-    useEffect(() => {
+    const loadEvents = useCallback((reset: boolean) => {
         loadCollection(actions, {
-            queries: state.query
+            queries: state.query,
+            limit: 2,
+            sort: { attribute: 'date', order: 'asc' },
+            pagination: true,
+            reset,
+            get: true
         });
-    }, [loadCollection, state.query]);
+    }, [loadCollection, state.query])
+
+    function loadMore() {
+        loadEvents(false)
+    }
+
+    useEffect(() => {
+        loadEvents(true)
+        return () => {
+            dispatch(actions.reset())
+        }
+    }, [loadEvents, dispatch])
 
     return (
         <Grid>
             <Grid.Row>
-                <Grid.Column width={10} ref={contextRef}>
-                    {status === 'loading' ? (
+                <Grid.Column width={10}>
+                    {!loadedInitial ? (
                         <>
                             <EventListItemPlaceholder />
                             <EventListItemPlaceholder />
                         </>
-                    ) : <EventList events={events} />
+                    ) :
+                        <>
+                            <EventList
+                                events={events}
+                                hasMore={hasMore.current}
+                                loadMore={loadMore}
+                                loading={status === 'loading'}
+                            />
+                           
+                        </>
                     }
 
                 </Grid.Column>
                 <Grid.Column width={6}>
-                    <div className = "ui fixed top sticky" style ={{top: 98, width: 405}}>
+                    <div className="ui fixed top sticky" style={{ top: 98, width: 405, zIndex: 1 }}>
                         <EventFilters
                             startDate={state.startDate}
                             setStartDate={changeDate}
