@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Button, Icon } from "semantic-ui-react";
 import { useFireStore } from "../../app/hooks/firestore/useFirestore";
-import { useAppDispatch } from "../../app/store/store";
+import { useAppDispatch, useAppSelector } from "../../app/store/store";
 import { AuthProvider, GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth } from "../../app/config/firebase";
 import { Timestamp } from "firebase/firestore";
 import { closeModal } from "../../app/common/modals/modalSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function SocialLogin() {
-
+    const navigate = useNavigate()
+    const {data: location} = useAppSelector(state => state.modals)
     const [status, setStatus] = useState<any>({
         loading: false,
         provider: null
@@ -31,7 +33,6 @@ export default function SocialLogin() {
         try {
             if (provider) {
                 const result = await signInWithPopup(auth,provider)
-                console.log(result);
                 if(result.user.metadata.creationTime===result.user.metadata.lastSignInTime){
                     await set(result.user.uid, {
                         displayName: result.user.displayName,
@@ -41,6 +42,7 @@ export default function SocialLogin() {
                     })
                 }
                 dispatch(closeModal())
+                navigate(location.from)
             }
         } catch (error: any) {
             toast.error(error.message)

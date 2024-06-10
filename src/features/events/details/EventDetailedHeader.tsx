@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Segment, Item, Header, Button, Image } from "semantic-ui-react";
 import { AppEvent } from "../../../app/types/event";
 import { useAppSelector } from "../../../app/store/store";
-import { toast } from "react-toastify";
 import { useState } from "react";
 import { useFireStore } from "../../../app/hooks/firestore/useFirestore";
 import { arrayRemove, arrayUnion } from "firebase/firestore";
@@ -13,18 +12,16 @@ type Props = {
 }
 
 
-
 export default function EventDetailedHeader({ event }: Props) {
 
     const { currentUser } = useAppSelector(state => state.auth)
     const [loading, setLoading] = useState(false)
     const { update } = useFireStore('events')
+    const navigate = useNavigate()
+    const location = useLocation()
 
     async function toggleAttendance() {
-        if (!currentUser) {
-            toast.error('Must be loggedin to do this')
-            return
-        }
+        if (!currentUser) return navigate('/unauthorised', {state: {from: location.pathname}})
         setLoading(true)
         if (event.isGoing) {
             const attendee = event.attendees.find(x => x.id === currentUser.uid)
